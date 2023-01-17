@@ -18,6 +18,7 @@ export const App = () => {
   const [page, setPage] = useState('');
 
   const getImages = async () => {
+    console.log('asasa')
     if (page > 0)
     {try {
       setIsLoading(true)
@@ -43,7 +44,6 @@ export const App = () => {
     setPage(page + 1)
   }
 
-
   const handleSubmitSearch = (event) => {
     event.preventDefault();
     setImages([]);
@@ -61,7 +61,10 @@ export const App = () => {
     }
   }
 
-  useEffect(() => {getImages()}, [page, search])
+  useEffect(() => {
+    getImages()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, search])
 
   useEffect(() => {
     const interval = setInterval(() => {
