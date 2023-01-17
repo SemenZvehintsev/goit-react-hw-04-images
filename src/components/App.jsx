@@ -18,7 +18,6 @@ export const App = () => {
   const [page, setPage] = useState('');
 
   const getImages = async () => {
-    console.log('asasa')
     if (page > 0)
     {try {
       setIsLoading(true)
