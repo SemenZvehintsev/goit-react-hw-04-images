@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import styles from 'components/App.module.css';
 import { params } from "tools/params";
@@ -17,7 +17,7 @@ export const App = () => {
   const [imageId, setImageId] = useState('');
   const [page, setPage] = useState('');
 
-  const getImages = async () => {
+  const getImages = useCallback(async () => {
     if (page > 0)
     {try {
       setIsLoading(true)
@@ -30,14 +30,14 @@ export const App = () => {
       const {hits} = data;
       const newImages = hits.map((hit) => 
       {return {id: hit.id, webformatURL: hit.webformatURL, tags: hit.tags, largeImageURL: hit.largeImageURL}})
-      setImages([...images, ...newImages]);
+      setImages(prevImages => [...prevImages, ...newImages]);
       setTotal(data.total);
       } catch (error) {
       console.error(error);
     } finally {
       setIsLoading(false)
     }}
-  }
+  }, [search, page])
 
   const handleLoadMore = () => {
     setPage(page + 1)
@@ -62,8 +62,7 @@ export const App = () => {
 
   useEffect(() => {
     getImages()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, search])
+  }, [getImages]) 
 
   useEffect(() => {
     const interval = setInterval(() => {
